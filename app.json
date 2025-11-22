@@ -1,0 +1,33 @@
+{
+  "expo": {
+    "...": "...",
+    "android": {
+      "permissions": [
+        "CAMERA",
+        "WRITE_EXTERNAL_STORAGE",
+        "READ_EXTERNAL_STORAGE",
+        "ACCESS_FINE_LOCATION",
+        "ACCESS_COARSE_LOCATION",
+        "READ_CALENDAR",
+        "WRITE_CALENDAR",
+        "CAMERA",
+        "WRITE_EXTERNAL_STORAGE",
+        "READ_EXTERNAL_STORAGE",
+        "ACCESS_FINE_LOCATION",
+        "ACCESS_COARSE_LOCATION",
+        "READ_CALENDAR",
+        "WRITE_CALENDAR"
+      ],
+      "package": "com.anonymous.meuapp"
+    },
+    "ios": {
+      "infoPlist": {
+        "NSCameraUsageDescription": "O app precisa acessar a câmera",
+        "NSPhotoLibraryAddUsageDescription": "O app precisa salvar fotos na galeria",
+        "NSLocationWhenInUseUsageDescription": "O app precisa acessar sua localização para mostrar sua posição no mapa",
+        "NSLocationAlwaysUsageDescription": "O app precisa acessar sua localização em segundo plano (se aplicável)",
+        "NSCalendarsUsageDescription": "O app precisa acessar o calendário para criar eventos"
+      }
+    }
+  }
+}
