@@ -87,4 +87,24 @@ export default StyleSheet.create({
   textAlign: 'center',
   marginBottom: 10,
 },
+centerWrapper: {
+  flexGrow: 1,
+  justifyContent: "center",
+  alignItems: "center",
+  paddingHorizontal: 20,
+},
+fixedContent: {
+  justifyContent: "center",
+  alignItems: "center",
+  paddingTop: 20,
+  paddingBottom: 10,
+  flexGrow: 0, // impede subir
+},
+
+listaArea: {
+  flex: 1,
+  width: "100%",
+  marginTop: 10,
+},
+
 });

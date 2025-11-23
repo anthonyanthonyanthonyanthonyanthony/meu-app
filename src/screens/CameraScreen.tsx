@@ -1,18 +1,26 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { View, Text, Button, TouchableOpacity, StyleSheet, Alert } from 'react-native';
+import Slider from '@react-native-community/slider';
 import { CameraView, useCameraPermissions } from 'expo-camera';
 import * as MediaLibrary from 'expo-media-library';
 import styles from "../styles";
 
 export default function CameraScreen({ onBack }: { onBack: () => void }) {
   const [facing, setFacing] = useState<"front" | "back">("back");
+  const [torchLigado, setTorchLigado] = useState(false);
+
+  // 🔥 zoom virtual 0 → 4
+  const [zoomVirtual, setZoomVirtual] = useState(0);
+
   const [cameraPermission, requestCameraPermission] = useCameraPermissions();
   const [galleryPermission, requestGalleryPermission] = MediaLibrary.usePermissions();
 
   const cameraRef = useRef<CameraView>(null);
 
   useEffect(() => {
-    if (!galleryPermission) requestGalleryPermission();
+    if (!galleryPermission?.granted) {
+      requestGalleryPermission();
+    }
   }, [galleryPermission]);
 
   if (!cameraPermission) {
@@ -53,16 +61,43 @@ export default function CameraScreen({ onBack }: { onBack: () => void }) {
   }
 
   function alternarCamera() {
-    setFacing((prev) => (prev === "back" ? "front" : "back"));
+    setFacing(prev => (prev === "back" ? "front" : "back"));
+  }
+
+  function alternarFlash() {
+    setTorchLigado(t => !t);
   }
 
   return (
-    <View style={styles.container}>
+    <View style={{ flex: 1, backgroundColor: '#000' }}>
       <CameraView
-        style={{ flex: 1 }}
-        facing={facing}
         ref={cameraRef}
+        style={{ flex: 1, width: "100%", height: "100%" }}
+        facing={facing}
+        mode="picture"
+        enableTorch={torchLigado}
+
+        // 🎯 zoom REAL = virtual / 4
+        zoom={zoomVirtual / 4}
       />
+
+      {/* Zoom slider */}
+      <View style={localStyles.zoomBox}>
+        <Text style={{ color: 'white', marginBottom: 5 }}>
+          Zoom: {zoomVirtual.toFixed(2)}x
+        </Text>
+
+        <Slider
+          style={{ width: 220, height: 40 }}
+          minimumValue={0}
+          maximumValue={4}
+          step={0.01}
+          value={zoomVirtual}
+          onValueChange={(value: number) => setZoomVirtual(value)}
+          minimumTrackTintColor="#FFFFFF"
+          maximumTrackTintColor="#888"
+        />
+      </View>
 
       <View style={localStyles.areaBotoes}>
         <TouchableOpacity style={localStyles.botao} onPress={alternarCamera}>
@@ -70,7 +105,13 @@ export default function CameraScreen({ onBack }: { onBack: () => void }) {
         </TouchableOpacity>
 
         <TouchableOpacity style={localStyles.botao} onPress={tirarFoto}>
-          <Text style={localStyles.textoBotao}>Tirar Foto</Text>
+          <Text style={localStyles.textoBotao}>Foto</Text>
+        </TouchableOpacity>
+
+        <TouchableOpacity style={localStyles.botao} onPress={alternarFlash}>
+          <Text style={localStyles.textoBotao}>
+            {torchLigado ? "Flash ON" : "Flash OFF"}
+          </Text>
         </TouchableOpacity>
 
         <TouchableOpacity
@@ -103,5 +144,11 @@ const localStyles = StyleSheet.create({
     fontSize: 18,
     fontWeight: 'bold',
     color: 'white',
+  },
+  zoomBox: {
+    position: 'absolute',
+    top: 40,
+    width: '100%',
+    alignItems: 'center',
   },
 });
