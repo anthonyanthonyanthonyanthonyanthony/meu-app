@@ -4,7 +4,8 @@ Um aplicativo desenvolvido em React Native com Expo, permitindo que usuários re
 
 Funcionalidades:
 
-Registrar Viagem
+Registrar Viagem:
+
 O usuário tira uma foto, informa o nome do local e o app salva automaticamente:
 
 Foto
