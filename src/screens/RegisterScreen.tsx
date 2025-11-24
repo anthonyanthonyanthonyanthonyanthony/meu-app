@@ -25,11 +25,9 @@ export default function RegisterScreen({
       return;
     }
 
-    // Carrega lista de usuários
     const stored = await AsyncStorage.getItem("@meuapp:users");
     let users = stored ? JSON.parse(stored) : [];
 
-    // Verifica se o usuário já existe
     const exists = users.some((u: any) => u.usuario === usuario);
 
     if (exists) {
@@ -37,10 +35,8 @@ export default function RegisterScreen({
       return;
     }
 
-    // Adiciona novo usuário
     users.push({ usuario, senha });
 
-    // Salva de volta no storage
     await AsyncStorage.setItem("@meuapp:users", JSON.stringify(users));
 
     Alert.alert("Conta criada!", "Agora faça login.");

@@ -1,109 +1,104 @@
 import React, { useEffect, useState } from "react";
-import { SafeAreaView, View, Text, TouchableOpacity, Alert } from "react-native";
+import { SafeAreaView, Alert } from "react-native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import styles from "./src/styles";
 
 import LoginScreen from "./src/screens/LoginScreen";
 import RegisterScreen from "./src/screens/RegisterScreen";
 import CameraScreen from "./src/screens/CameraScreen";
-import CalendarScreen from "./src/screens/CalendarScreen";
 import MapScreen from "./src/screens/MapScreen";
+import TripsScreen from "./src/screens/TripsScreen";
 
-type Screen = "login" | "register" | "main" | "camera" | "calendar" | "map";
+import { TripsProvider, useTrips } from "./src/context/TripsContext";
 
-export default function App() {
+type Screen = "login" | "register" | "map" | "camera" | "trips";
+
+function AppInner() {
   const [screen, setScreen] = useState<Screen>("login");
   const [user, setUser] = useState<string | null>(null);
 
-  // Auto login (lembrar)
+  // 👉 Pega as viagens salvas no contexto
+  const { trips } = useTrips();
+
   useEffect(() => {
     (async () => {
       const saved = await AsyncStorage.getItem("@meuapp:user");
       if (saved) {
         setUser(saved);
-        setScreen("main");
+        setScreen("map");
       }
     })();
   }, []);
 
-  // LOGIN 
-  if (screen === "login") {
-    return (
-      <SafeAreaView style={styles.safeContainer}>
-        <LoginScreen
-          onLogin={async (usuario, senha, remember) => {
-            const stored = await AsyncStorage.getItem("@meuapp:users");
-            const users = stored ? JSON.parse(stored) : [];
-
-            const found = users.find(
-              (u: any) => u.usuario === usuario && u.senha === senha
-            );
-
-            if (!found) {
-              Alert.alert("Erro", "Usuário ou senha incorretos.");
-              return;
-            }
-
-            setUser(usuario);
-
-            if (remember) {
-              await AsyncStorage.setItem("@meuapp:user", usuario);
-            }
-
-            setScreen("main");
-          }}
-          onGoToRegister={() => setScreen("register")}
-        />
-      </SafeAreaView>
-    );
-  }
-
-  // REGISTRO
-  if (screen === "register") {
-    return (
-      <SafeAreaView style={styles.safeContainer}>
-        <RegisterScreen
-          onBack={() => setScreen("login")}
-          onRegister={() => setScreen("login")}
-        />
-      </SafeAreaView>
-    );
-  }
-
-  // OUTRAS TELAS
-  if (screen === "camera") return <CameraScreen onBack={() => setScreen("main")} />;
-  if (screen === "calendar") return <CalendarScreen onBack={() => setScreen("main")} />;
-  if (screen === "map") return <MapScreen onBack={() => setScreen("main")} />;
-
-  // PRINCIPAL
   return (
-    <SafeAreaView style={styles.safeContainer}>
-      <View style={styles.container}>
-        <Text style={styles.title}>App Integrado — Olá, {user}</Text>
+    <>
+      {screen === "login" && (
+        <SafeAreaView style={styles.safeContainer}>
+          <LoginScreen
+            onLogin={async (usuario, senha, remember) => {
+              const stored = await AsyncStorage.getItem("@meuapp:users");
+              const users = stored ? JSON.parse(stored) : [];
 
-        <TouchableOpacity style={styles.button} onPress={() => setScreen("camera")}>
-          <Text style={styles.buttonText}>Abrir Câmera</Text>
-        </TouchableOpacity>
+              const found = users.find(
+                (u: any) => u.usuario === usuario && u.senha === senha
+              );
 
-        <TouchableOpacity style={styles.button} onPress={() => setScreen("calendar")}>
-          <Text style={styles.buttonText}>Abrir Calendário</Text>
-        </TouchableOpacity>
+              if (!found) {
+                Alert.alert("Erro", "Usuário ou senha incorretos.");
+                return;
+              }
 
-        <TouchableOpacity style={styles.button} onPress={() => setScreen("map")}>
-          <Text style={styles.buttonText}>Abrir Mapa</Text>
-        </TouchableOpacity>
+              setUser(usuario);
 
-        <TouchableOpacity
-          style={[styles.button, { backgroundColor: "#888" }]}
-          onPress={async () => {
+              if (remember) {
+                await AsyncStorage.setItem("@meuapp:user", usuario);
+              }
+
+              setScreen("map");
+            }}
+            onGoToRegister={() => setScreen("register")}
+          />
+        </SafeAreaView>
+      )}
+
+      {screen === "register" && (
+        <SafeAreaView style={styles.safeContainer}>
+          <RegisterScreen
+            onBack={() => setScreen("login")}
+            onRegister={() => setScreen("login")}
+          />
+        </SafeAreaView>
+      )}
+
+      {screen === "camera" && (
+        <CameraScreen user={user ?? ""} onBack={() => setScreen("map")} />
+      )}
+
+      {screen === "map" && (
+        <MapScreen
+          user={user}
+          trips={trips}   // 👈 AGORA O MAPSCREEN RECEBE AS VIAGENS
+          onLogout={async () => {
             await AsyncStorage.removeItem("@meuapp:user");
             setUser(null);
             setScreen("login");
           }}
-        >
-          <Text style={styles.buttonText}>Logout</Text>
-        </TouchableOpacity>
-      </View>
-    </SafeAreaView>
+          onOpenCamera={() => setScreen("camera")}
+          onOpenTrips={() => setScreen("trips")}
+        />
+      )}
+
+      {screen === "trips" && (
+        <TripsScreen user={user ?? ""} onBack={() => setScreen("map")} />
+      )}
+    </>
+  );
+}
+
+export default function App() {
+  return (
+    <TripsProvider>
+      <AppInner />
+    </TripsProvider>
   );
 }

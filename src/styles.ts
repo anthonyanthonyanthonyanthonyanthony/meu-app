@@ -60,7 +60,8 @@ export default StyleSheet.create({
     fontSize: 20,
     fontWeight: "600",
   },
-    backButton: {
+
+  backButton: {
     position: "absolute",
     top: 40,
     left: 15,
@@ -70,41 +71,107 @@ export default StyleSheet.create({
     borderRadius: 8,
     zIndex: 10,
   },
+
   backButtonText: {
     color: "#fff",
     fontSize: 16,
     fontWeight: "600",
   },
- centered: {
+
+  centered: {
     flex: 1,
     justifyContent: "center",
     alignItems: "center",
     backgroundColor: "#fff",
   },
+
   mensagem: {
-  fontSize: 16,
-  color: '#000',
-  textAlign: 'center',
-  marginBottom: 10,
-},
-centerWrapper: {
-  flexGrow: 1,
-  justifyContent: "center",
-  alignItems: "center",
-  paddingHorizontal: 20,
-},
-fixedContent: {
-  justifyContent: "center",
-  alignItems: "center",
-  paddingTop: 20,
-  paddingBottom: 10,
-  flexGrow: 0, // impede subir
-},
+    fontSize: 16,
+    color: "#000",
+    textAlign: "center",
+    marginBottom: 10,
+  },
 
-listaArea: {
-  flex: 1,
-  width: "100%",
-  marginTop: 10,
-},
+  centerWrapper: {
+    flexGrow: 1,
+    justifyContent: "center",
+    alignItems: "center",
+    paddingHorizontal: 20,
+  },
 
+  fixedContent: {
+    justifyContent: "center",
+    alignItems: "center",
+    paddingTop: 20,
+    paddingBottom: 10,
+    flexGrow: 0,
+  },
+
+  listaArea: {
+    flex: 1,
+    width: "100%",
+    marginTop: 10,
+  },
+
+  card: {
+    backgroundColor: "#f5f5f5",
+    borderRadius: 12,
+    marginBottom: 20,
+    padding: 15,
+    elevation: 2,
+  },
+
+  imagem: {
+    width: "100%",
+    height: 200,
+    borderRadius: 10,
+    marginBottom: 10,
+  },
+
+  infoContainer: {
+    marginBottom: 12,
+  },
+
+  nomeLocal: {
+    fontSize: 20,
+    fontWeight: "bold",
+    color: "#222",
+    marginBottom: 5,
+  },
+
+  data: {
+    fontSize: 14,
+    color: "#666",
+  },
+
+  coords: {
+    fontSize: 14,
+    color: "#666",
+  },
+
+  actionsRow: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    marginTop: 10,
+  },
+
+  botaoEditar: {
+    backgroundColor: "#007AFF",
+    paddingVertical: 10,
+    paddingHorizontal: 20,
+    borderRadius: 10,
+  },
+
+  botaoExcluir: {
+    backgroundColor: "#ff3b30",
+    paddingVertical: 10,
+    paddingHorizontal: 20,
+    borderRadius: 10,
+  },
+
+  botaoTexto: {
+    color: "#fff",
+    fontSize: 16,
+    fontWeight: "600",
+  },
 });

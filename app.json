@@ -4,15 +4,8 @@
     "android": {
       "permissions": [
         "CAMERA",
-        "WRITE_EXTERNAL_STORAGE",
         "READ_EXTERNAL_STORAGE",
-        "ACCESS_FINE_LOCATION",
-        "ACCESS_COARSE_LOCATION",
-        "READ_CALENDAR",
-        "WRITE_CALENDAR",
-        "CAMERA",
         "WRITE_EXTERNAL_STORAGE",
-        "READ_EXTERNAL_STORAGE",
         "ACCESS_FINE_LOCATION",
         "ACCESS_COARSE_LOCATION",
         "READ_CALENDAR",
