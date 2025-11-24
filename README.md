@@ -34,10 +34,12 @@ Expandir a imagem ao clicar
 Suporte a múltiplos usuários
 Cada usuário só vê e gerencia suas próprias viagens.
 
-Armazenamento Local
+Armazenamento Local:
+
 Os dados são salvos usando AsyncStorage, funcionando mesmo offline.
 
 Como rodar o projeto?
+
 git clone https://github.com/anthonyanthonyanthonyanthonyanthony/meu-app
 
 cd meu-app
